@@ -20,6 +20,21 @@ CLASS<- read.csv(text='Name,Sex,Age,Height,Weight
 "William","M",15,66.5,112
 ')
 
+POET<- read.csv(text='Name,Birthyear,Deathyear,Age,Bc,Dc,Over50
+"高适",700,765,65,700,700,1
+"王维",701,761,60,700,700,1
+"李白",701,762,61,700,700,1
+"杜甫",712,770,58,700,700,1
+"岑参",715,770,55,700,700,1
+"韩愈",768,824,56,700,800,1
+"刘禹锡",772,842,70,700,800,1
+"白居易",772,846,74,700,800,1
+"柳宗元",773,819,46,700,800,0
+"李贺",790,816,26,700,800,0
+"杜牧",803,852,49,800,800,0
+"李商隐",812,858,46,800,800,0
+')
+
 #Create new column
 CLASS['Agegrp']<-CLASS[['Age']]<15
 
@@ -50,9 +65,12 @@ rc}
 
 procFreqExNew<-function(df,varname) {
 
-opt<-lapply(list(varname),function(vari) as.data.frame(df[vari]))
+opt<-lapply(list(varname),function(vari) {as.data.frame(df[vari])})
 dfCut <- data.frame(opt)
 rc<-as.data.frame(table(dfCut))
+rc<-subset(rc,rc['Freq']!=0)
+#subset(oneDSN,oneDSN[byVar]==as.character(levels(value))[value])
+
 rc}
 
 
@@ -187,11 +205,7 @@ moreBy<-function (theDSN,byVars){
 
  }
 
-all<-moreBy(CLASS,'Sex Age')
-for (one in all){
- print(one)
- print(procMeansCore(one[,"Weight"],'std sum'))
-}
+
 
 writeToJSON<-function (dsn,dsnName){
 	writeLines(paste('{"SASTableData+',toupper(dsnName),'":[',sep=""))
