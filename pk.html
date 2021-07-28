@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html <meta charset='utf-8' /> >  <head>
+
+</head>
+<body>
+
+<!-- <input id="hintTaggle" type="button" visible="False" value=" hide/show SAS code Window" onclick="hintTaggle();"/> -->
+<input id="testBtn" type="button" value=" test anything "
+onclick="testBtn();"/>
+<input id="jsonBtn" type="button" value=" textarea string to json string"
+onclick="jsonBtn();"/>
+<input id="out2HTMLBtn" type="button" value=" output to html string"
+onclick="out2HTMLBtn();"/>
+<input id="hintBtn" type="button" value=" Find a hint"
+onclick="hintBtn();"/>
+<input id="DSjsonBtn" type="button" value="Read Dataset from JSON"
+onclick="DSjsonBtn();"/>
+<input id="json2RBtn" type="button" value="Write Dataset to R dataframe"
+onclick="json2RBtn();"/>
+
+<br><br>
+
+<style>
+textarea {
+  width: 100%;
+  height: 350px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  overflow-x: scroll;
+  white-space:nowrap;
+  overflow:scroll;
+  background-color: #f8f8f8;
+  font-size: 32px;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+
+
+}
+
+</style>
+<style> table, th, td { border: 1px solid black; border-collapse: collapse;} </style>
+<input id="googleWndB" type="button" value="Raw SAS code Window"
+onclick="toGoogleWnd();"/>
+<input id="outputWndB" type="button" value="Output Window"
+onclick="toOutputWnd();"/>
+<input id="DataWndB" type="button" value="Data Window"
+onclick="toDataWnd();"/>
+<input id="rWndB" type="button" value="R code Window"
+onclick="toRWnd();"/>
+<input id="SASWndB" type="button" value="Parsed SAS code Window"
+onclick="toSASWnd();"/>
+<input id="htmlWndB" type="button" value="HTML Style Output"
+onclick="toHtmlWnd();"/>
+<p id='htmlWnd'> </p>
+<textarea cols="70" rows="20"
+ ondblclick="db(event)"
+
+ onkeyup="return enterSomething(event)"  id="commandBox"   name="Command to UNIX"  > </textarea>
+<br>
+
+<textarea   cols="70" rows="20"  id="DataWnd"   name="DataWnd"  > </textarea>
+<textarea   ondblclick="outdb(event)" cols="70" rows="20"  id="HintBox"   name="HintBox"  > </textarea>
+<textarea   cols="70" rows="20"  id="RWnd"   name="RWnd"  > </textarea>
+<textarea   cols="70" rows="20"  id="SASWnd"   name="SASWnd"  > </textarea>
+
+
+
+
+<div class="popup" onclick="myFunction()">  '__________________________________________________________________'
+  <span class="popuptext" id="myPopup">
+ </span>
+</div>
+<!-- <script src="./main.js" charset="UTF-8"></script>
+<script src="./func.js"></script>
+<script src="./procFreq.js"></script>
+<script src="./procPrint.js"></script>
+<script src="./procMeans.js"></script>
+<script src="./sasObj.js"></script> -->
+<script src="./pk.js" charset="UTF-8"></script>
+
+
+<script>
+displayAllDsn();
+toDataWnd();
+
+hintTaggle();
+</script>
+
+
+<style> /* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+/*font-family:"Times" ,monospace;*/
+/* The actual popup (appears on top) */
+.popup .popuptext {
+    visibility: hidden;
+    width: 960px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup)
+
+*/
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}</style>
+
+<p>..</p>
+
+
+</body>
+</html>
