@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html <meta charset='utf-8' /> >  <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>type something and press ESC to invoke the hint</h1>
+<style>
+textarea {
+  width: 100%;
+  height: 350px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 32px;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+
+
+}
+</style>
+<style> /* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+/*font-family:"Times" ,monospace;*/
+/* The actual popup (appears on top) */
+.popup .popuptext {
+    visibility: hidden;
+    width: 960px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup)
+
+*/
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}</style>
+<textarea cols="70" rows="20" onkeyup="return enterSomething(event)"  id="commandbox"   name="Command to UNIX"  > </textarea>
+<br>
+<textarea    cols="70" rows="20"    id="hintbox"   name="Hintbox"  > </textarea>
+<script>
+varlist= ["age", "height", "weight","name",
+
+'vsloc."AXILLA"',
+'vsloc."ORAL CAVITY"',
+'vsloc."TEMPORAL ARTERY"',
+'vsloc."TYMPANIC MEMBRANE"'
+
+
+];
+function myFunction(str) {
+  //alert(str);
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show",false);
+    if    (str==='') { return;};
+
+  popup.innerHTML='';
+
+
+  var re=new RegExp(str, "i");
+
+
+  varlist.forEach(function(item,index,array) {
+       if (item.search(re)>-1) {
+             if (item.split('.')[1]>'') {  popup.innerHTML=popup.innerHTML+item.split('.')[1]+'<br/>'}
+             else {  popup.innerHTML=popup.innerHTML+item+'<br/>'}
+             }
+
+      });
+
+    /*
+    else
+    {   alert(1); alert('ag'.search(re)  );
+
+        var varName=str.split('.')[0];
+        var varPartialValue=str.split('.')[1];
+        var varObj=document.getElementById(varName+"ValueList");
+        var re=new RegExp(varPartialValue, "i");
+        varObj.forEach(function(item,index,array) {
+             if (item.search(re)>-1) {  popup.innerHTML=popup.innerHTML+item+'<br/>'}
+
+              });
+    }
+    */
+    popup.classList.toggle("show",true);
+};
+
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
+
+
+function datasort(dsn,by,out){
+if (! out) {out=dsn};
+var outvalue='%* sort dsn= by= out= ; \n';
+outvalue=outvalue+'proc sort data='+dsn+' out='+out+';\n';
+outvalue=outvalue+'  by '+by+';\n';
+outvalue=outvalue+'run; ';
+
+return outvalue;
+
+}
+
+function mergedsn(dsn1,dsn2,by ,outdsn){
+//if (! outdsn) {};
+var outvalue=
+""+"\n"+
+"proc sort data ="+dsn1+" ;"+"\n"+
+"  by  "+by+" ;"+"\n"+
+"run;"+"\n"+
+"proc sort data ="+dsn2+" ;"+"\n"+
+"  by  "+by+" ;"+"\n"+
+"run;"+"\n"+
+" "+"\n"+
+"data "+outdsn+";"+"\n"+
+"    merge  "+dsn1+"(in=ind1) "+dsn2+"(in=ind2) ;"+"\n"+
+"    by "+by+";"+"\n"+
+"run;"+"\n"+
+""+"\n";
+
+return outvalue;
+
+}
+
+function eqtext(w1,w2){
+
+var outvalue="upcase("+w1+")=upcase("+w2+")";
+
+return outvalue;
+
+}
+
+function eqmac(w1,w2){
+
+var outvalue="%upcase("+w1+")=%upcase("+w2+")";
+
+return outvalue;
+
+}
+
+function blank(word){
+
+var outvalue= ' %length(%superq('+word+'))';
+return outvalue;
+
+}
+
+function count(word){
+
+var outvalue= ' %sysfunc(countw('+word+'))';
+return outvalue;
+
+}
+
+function pm(words){
+var word;
+var outvalue='';
+for (word in words){
+  var outvalue= outvalue+'%put '+words[word]+'=%superq('+words[word]+');\n';
+}
+return outvalue;
+
+}
+
+function words(word, num){
+
+var outvalue='';
+for (var i=1; i<=num;i++){
+
+  var outvalue= outvalue+word+i.toString()+' ';
+}
+return outvalue;
+
+}
+
+
+
+
+function enterSomething(e) {
+  var popup = document.getElementById("myPopup");
+    //if (popup.innerHTML>''  )
+  popup.classList.toggle("show",false);
+    if ((e.keyCode == 13) &&  e.ctrlKey) {
+        event.preventDefault();
+
+
+
+   var popup = document.getElementById("myPopup");
+     // alert(popup.innerHTML.split('<br>')[0]);
+     // alert(popup.innerHTML.split('<br>')[0].split('.')[1]);
+     var n = tb.value.split(" ");
+     var lastword = n[n.length - 1];
+     if  (lastword.split('.')[1] >'' )  {
+          tb.value=tb.value.replace(/\w+\.\w*$/,popup.innerHTML.split('<br>')[0])}
+     else {  tb.value=tb.value.replace(/\w+\.?$/,popup.innerHTML.split('<br>')[0])}
+  //tb.value=globalStorage[location.host].getItem("ahuige");
+    };
+  var tb = document.getElementById("commandbox");
+  var htTb = document.getElementById("hintbox");
+  var tbValue=tb.value.trim().replace(/\s+/g,' ');//+String.fromCharCode(e.keyCode);
+  var tbarr=tbValue.split(' ');
+
+
+  if (tbarr[0].match(/^\s*(ahg)?(data)?sort\s*$/i)) {htTb.value=datasort(tbarr[1],tbarr[2],tbarr[3]); }
+  else if (tbarr[0].match(/^\s*(ahg)?merge(dsn)?\s*$/i)) {htTb.value=mergedsn(tbarr[1],tbarr[2],tbarr[3],tbarr[4]); }
+  else if (tbarr[0].match(/^\s*up\s*$/i)) {htTb.value=eqtext(tbarr[1],tbarr[2]); }
+  else if (tbarr[0].match(/^\s*%up\s*$/i)) {htTb.value=eqmac(tbarr[1],tbarr[2]); }
+  else if (tbarr[0].match(/^\s*bla\s*$/i)) {htTb.value=blank(tbarr[1] ); }
+  else if (tbarr[0].match(/^\s*cou\s*$/i)) {htTb.value=count(tbarr[1] ); }
+  else if (tbarr[0].match(/^\s*pm\s*$/i)) {htTb.value=pm(tbarr.slice(1) ); }
+  else if (tbarr[0].match(/^\s*words\s*$/i)) {htTb.value=words(tbarr[1],tbarr[2] ); }
+  else {htTb.value='';}
+
+
+
+  if (e.keyCode == 27) {
+        event.preventDefault();
+
+   var tb = document.getElementById("commandbox");
+
+   var n = tb.value.split(" ");
+     var lastword = n[n.length - 1];
+   //alert( lastword);
+   myFunction(lastword);
+    };
+
+  if ( (e.keyCode>=49)&& e.ctrlKey   ) {
+        event.preventDefault();
+
+   var tb = document.getElementById("commandbox");
+
+
+     var n = tb.value.split(" ");
+     var lastword = n[n.length - 1];
+     if  (lastword.split('.')[1] >'' )  {
+          tb.value=tb.value.replace(/\w+\.\w*$/,popup.innerHTML.split('<br>')[e.keyCode-49])}
+     else {  tb.value=tb.value.replace(/\w+\.?$/,popup.innerHTML.split('<br>')[e.keyCode-49])}
+  // popup.classList.toggle("show",false);
+    };
+
+    if ((e.keyCode == 27) && e.ctrlKey) {
+
+
+
+      myObj={"SASJSONExport":"1.0","SASTableData+NEW":[{"Name":",\"Alfred","Sex":"M","Age":14,"Height":69,"Weight":112.5},{"Name":"Alice","Sex":"F","Age":13,"Height":56.5,"Weight":84},{"Name":"Barbara","Sex":"F","Age":13,"Height":65.3,"Weight":98},{"Name":"Carol","Sex":"F","Age":14,"Height":62.8,"Weight":102.5},{"Name":"Henry","Sex":"M","Age":14,"Height":63.5,"Weight":102.5},{"Name":"James","Sex":"M","Age":12,"Height":57.3,"Weight":83},{"Name":"Jane","Sex":"F","Age":12,"Height":59.8,"Weight":84.5},{"Name":"Janet","Sex":"F","Age":15,"Height":62.5,"Weight":112.5},{"Name":"Jeffrey","Sex":"M","Age":13,"Height":62.5,"Weight":84},{"Name":"John","Sex":"M","Age":12,"Height":59,"Weight":99.5},{"Name":"Joyce","Sex":"F","Age":11,"Height":51.3,"Weight":50.5},{"Name":"Judy","Sex":"F","Age":14,"Height":64.3,"Weight":90},{"Name":"Louise","Sex":"F","Age":12,"Height":56.3,"Weight":77},{"Name":"Mary","Sex":"F","Age":15,"Height":66.5,"Weight":112},{"Name":"Philip","Sex":"M","Age":16,"Height":72,"Weight":150},{"Name":"Robert","Sex":"M","Age":12,"Height":64.8,"Weight":128},{"Name":"Ronald","Sex":"M","Age":15,"Height":67,"Weight":133},{"Name":"Thomas","Sex":"M","Age":11,"Height":57.5,"Weight":85},{"Name":"William","Sex":"M","Age":15,"Height":66.5,"Weight":112}]}
+      ;
+      /*{rec18          : { row:18
+ ,Name :"Thomas ",Sex :"M "}
+ ,
+ rec19          : { row:19
+ ,Name :"William ",Sex :"M "}
+};
+*/
+
+function procprint(dsn,myvar,by){
+//var outvalue=dsn[1]['Name'];
+var outvalue='';
+myvar=' '+myvar+' ';
+for (i = 0; i < dsn.length; i++){
+  //forEach Object.keys(dsn).
+  if (i==0){
+    Object.keys(dsn[i]).forEach(ele=>{
+      var re = new RegExp(ele, 'i');
+      if (myvar.search(re)>-1) {
+       outvalue=outvalue+(ele+'                            ').substring(0,15)
+      }
+
+    });
+    outvalue=outvalue+'\n';
+  };
+
+  Object.keys(dsn[i]).forEach(ele=>{
+    var re = new RegExp(ele, 'i');
+    if (myvar.search(re)>-1) {
+      outvalue=outvalue+(dsn[i][ele]+'                            ').substring(0,15);
+
+    }
+  });
+  outvalue=outvalue+'\n';
+
+
+}
+
+return outvalue;
+/*
+Object.keys(dsn][0])
+dsn[1][myvar];
+myObj['SASTableData+NEW'].length+'\n'
++Object.keys(myObj['SASTableData+NEW'][0]).length+'\n'
+  +procprint(myObj['SASTableData+NEW'],'Name','');
+  */
+}
+
+ alert('I am  in');
+ var htTb = document.getElementById("hintbox");
+ //myObj = {name: "John", age: 31, city: "New York"};
+ //myJSON =  JSON.stringify(myObj);
+// htTb.value =JSON. stringify(JSON.parse(myJSON)['SASTableData+CLASS'][0]);
+ //htTb.value =myObj['SASTableData+NEW'][0]['Name'];
+ //myObj['SASTableData+NEW']
+
+ htTb.value =procprint(myObj['SASTableData+NEW'],'Age Name','');
+ /*
+ myObj['SASTableData+NEW'].length+'\n'
+ +Object.keys(myObj['SASTableData+NEW'][0]).length+'\n\n'
+   +*/
+
+ //htTb.value =JSON.parse(myJSON)['SASTableData+NEW'][0]['Name'];
+
+ //myJSON.name;
+}
+
+ };
+
+
+
+
+
+</script>
+
+<p>..</p>
+<p>..</p>
+<p>..</p>
+<p>..</p>
+<p>..   <div class="popup" onclick="myFunction()">  '__________________________________________________________________'
+  <span class="popuptext" id="myPopup">
+ </span>
+</div></p>
+</body>
+</html>
