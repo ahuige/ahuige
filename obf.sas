@@ -5210,3 +5210,13 @@ run;
 
 %exitp:
 %mend;
+
+%macro AHGbool(vars,zero=);
+%local _ahg_ahuige_79250 _ahg_huigea_79250 ;
+ 1  
+%do _ahg_huigea_79250=1 %to %AHGcount(&vars);
+%let _ahg_ahuige_79250=%scan(&vars,&_ahg_huigea_79250);
+and 
+ (catx('',&_ahg_ahuige_79250)>'' and compress(catx('',&_ahg_ahuige_79250)) not in ("&zero",'.'))
+%end; 
+%mend;
