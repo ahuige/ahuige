@@ -1,0 +1,1 @@
+%ahgpm(sysdate);
