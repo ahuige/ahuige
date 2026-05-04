@@ -1,1 +1,1 @@
-%ahgpm(sysdate);
+%put ahgpm(sysdate);
